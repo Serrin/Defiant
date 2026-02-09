@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Defiant – Tuple and Record Utilities</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="Author" content="Czigler Ferenc" />
+<meta name="Copyright" content="(C) Copyright Czigler Ferenc" />
+<link rel="stylesheet" href="u87.css" type="text/css" />
+<style>
+body {
+  font-size: 15px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.5rem;
+}
+</style>
+</head>
+<body>
+
+<h1 class="center">Defiant – Tuple and Record Utilities</h1>
+
+<p>A small utility module for working with <strong>tuples</strong> (frozen arrays) and <strong>records</strong> (frozen objects) in JavaScript / TypeScript.</p>
+<p>The module emphasizes immutability and provides helpers for creation, type checks, deep equality, and conversion.</p>
+
+<hr/>
+
+<h2>Overview</h2>
+
+<p><strong>Version: 1.0.0</strong></p>
+
+<p><strong>Defiant</strong> provides:</p>
+
+<ul>
+  <li>Immutable tuple creation (<code>Object.freeze();</code>-based)</li>
+  <li>Immutable record creation (<code>Object.freeze();</code>-based)</li>
+  <li>Type guards for tuples and records</li>
+  <li>Deep equality comparison for arrays and objects</li>
+  <li>Conversion utilities between frozen and mutable structures</li>
+</ul>
+
+<p>The module is implemented in TypeScript-compatible JavaScript and relies only on standard ECMAScript APIs.</p>
+
+<hr/>
+
+<h2>Design Notes</h2>
+
+<ul>
+  <li><strong>Immutability is shallow by design</strong></li>
+    <ul><li>Freezing is applied only at the top level</li></ul>
+  <li><strong>No external dependencies</strong></li>
+  <li><strong>TypeScript-friendly</strong></li>
+    <ul><li>Uses generics and type predicates</li></ul>
+  <li><strong>Structural equality</strong></li>
+    <ul><li>Useful for functional programming and state comparison</li></ul>
+</ul>
+
+<hr/>
+
+<h2>Autotest</h2>
+
+<p>
+  &nbsp;
+  <button onclick="autoTest();">run autotests</button>
+  &nbsp;
+  <button onclick="globalThis.location.reload(true);">reset page</button>
+  &nbsp;
+</p>
+
+<hr/>
+
+<h2>How to import</h2>
+
+<p>Import directly as a local module:</p>
+
+<pre>import { Tuple, Record } from "./defiant.js";</pre>
+
+<p>Import default directly as a local module:</p>
+
+<pre>import { default as defiant } from "./defiant.js";</pre>
+
+<p>Import defaultExport directly as a local module:</p>
+
+<pre>import { defaultExport as defiant } from "./defiant.js";</pre>
+
+<hr/>
+
+<h2>Exports</h2>
+
+<pre>export { Tuple, Record };
+export default { Tuple, Record };</pre>
+
+<hr/>
+
+<h2>Tuple Utilities</h2>
+
+<p>Tuples are implemented as <strong>frozen arrays</strong>.</p>
+
+<h3><code>Tuple(...values)</code></h3>
+
+<p>Creates a frozen array (tuple) from the given values.</p>
+
+<pre>const t = Tuple(1, "a", true);
+// readonly [1, "a", true]</pre>
+
+<h4>Signature</h4>
+
+<pre>Tuple&#60;T extends readonly unknown[]&#62;(...values: T): T</pre>
+
+<hr/>
+
+<h3><code>Tuple.of(...values)</code></h3>
+
+<p>Alias for <code>Tuple(...)</code>.</p>
+
+<pre>const t = Tuple.of(1, 2, 3);</pre>
+
+<hr/>
+
+<h3><code>Tuple.from(iterable)</code></h3>
+
+<p>Creates a tuple from an iterable or array-like object.</p>
+
+<pre>const t = Tuple.from(new Set([1, 2, 3]));</pre>
+
+<h4>Signature</h4>
+
+<pre>Tuple.from&#60;T extends readonly unknown[]&#62;(
+  iterable: Iterable&#60;unknown&#62; | ArrayLike&#60;unknown&#62;): T
+</pre>
+
+<hr/>
+
+<h3><code>Tuple.isTuple(value)</code></h3>
+
+<p>Checks whether a value is a frozen array.</p>
+
+<pre>Tuple.isTuple(Object.freeze([1, 2])); // true
+Tuple.isTuple([1, 2]);                // false</pre>
+
+<h4>Signature</h4>
+
+<pre>Tuple.isTuple(value: unknown): value is readonly unknown[]</pre>
+
+<hr/>
+
+<h3><code>Tuple.isEqual(x, y)</code></h3>
+
+<p>Performs a <strong>deep equality check</strong> between two values.</p>
+
+<h4>Characteristics</h4>
+
+<ul>
+  <li>Uses <strong></strong>SameValueZero</strong> semantics for primitives</li>
+  </ul>
+    <li><code>NaN === NaN</code> -> <code>true</code></li>
+    <li><code>-0</code> and <code>+0</code> are treated as equal</li>
+  </ul>
+  <li>Recursively compares:</li>
+  </ul>
+    <li>Arrays (length and element order)</li>
+    <li>Objects (prototype, keys, and values)</li>
+  </ul>
+  <li>Works for nested structures</li>
+</ul>
+
+<pre>Tuple.isEqual(
+  Tuple(1, { a: 2 }),
+  Tuple(1, { a: 2 })
+); // true</pre>
+
+<h4>Signature</h4>
+
+<pre>Tuple.isEqual&#60;T extends readonly unknown[]&#62;(x: T, y: T): boolean</pre>
+
+<hr/>
+
+<h3><code>Tuple.toArray(value)</code></h3>
+
+<p>Converts a tuple to a mutable array (shallow copy).</p>
+
+<pre>const arr = Tuple.toArray(Tuple(1, 2, 3));</pre>
+
+<p><strong>Note:</strong> Nested objects are still shared.</p>
+
+<h4>Signature</h4>
+
+<pre>Tuple.toArray&#60;T extends readonly unknown[]&#62;(value: T): unknown[]</pre>
+
+<hr/>
+
+<h2>Record Utilities</h2>
+
+<p>Records are implemented as <strong>frozen objects</strong> (shallow freeze).</p>
+
+<hr/>
+
+<h3><code>Record(object)</code></h3>
+
+<p>Creates a frozen copy of an object.</p>
+
+<pre>const r = Record({ a: 1, b: 2 });</pre>
+
+<p><strong>Characteristics</strong></p>
+
+<ul>
+  <li>Shallow freeze</li>
+  <li>Nested objects remain mutable</li>
+</ul>
+
+<h4>Signature</h4>
+
+<pre>Record&#60;T extends object&#62;(O: T): T</pre>
+
+<hr/>
+
+<h3><code>Record.fromEntries(entries)</code></h3>
+
+<p>Creates a record from an iterable of key–value pairs.</p>
+
+<pre>const r = Record.fromEntries([
+  ["a", 1],
+  ["b", 2],
+]);</pre>
+
+<h4>Signature</h4>
+
+<pre>Record.fromEntries&#60;T extends object&#62;(
+  entries: Iterable&#60;readonly [keyof T, unknown]&#62;
+): T</pre>
+
+<hr/>
+
+<h3><code>Record.fromObject(object)</code></h3>
+
+<p>Alias for <code>Record(object)</code>.</p>
+
+<pre>const r = Record.fromObject({ x: 10 });</pre>
+
+<hr/>
+
+<h3><code>Record.isRecord(value)</code></h3>
+
+<p>Checks whether a value is a frozen object.</p>
+
+<pre>Record.isRecord(Object.freeze({ a: 1 })); // true
+Record.isRecord({ a: 1 });                // false</pre>
+
+<h4>Signature</h4>
+
+<pre>Record.isRecord(value: unknown): value is object</pre>
+
+<hr/>
+
+<h3><code>Record.isEqual(x, y)</code></h3>
+
+<p>Alias for <code>Tuple.isEqual</code>.</p>
+
+<pre>Record.isEqual({ a: 1 }, { a: 1 }); // true</pre>
+
+<h4>Signature</h4>
+
+<pre>Record.isEqual(x: readonly unknown, y: readonly unknown): boolean</pre>
+
+<hr/>
+
+<h3><code>Record.toObject(value)</code></h3>
+
+<p>Converts a record to a mutable object (shallow copy).</p>
+
+<pre>const obj = Record.toObject(Record({ a: 1 }));</pre>
+
+<h4>Signature</h4>
+
+<pre>Record.toObject&#60;T extends object&#62;(value: T): object</pre>
+
+<hr/>
+
+<h2>License</h2>
+
+<p><a href="https://opensource.org/licenses/MIT" target="_blank">https://opensource.org/licenses/MIT</a></p>
+
+<p>MIT License</p>
+
+<p>SPDX short identifier: MIT</p>
+
+<p>Copyright (c) 2026 Ferenc Czigler</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</p>
+
+<hr/>
+
+<p>Copyright (c) 2026 Ferenc Czigler <a href="https://github.com/Serrin" target="_blank">https://github.com/Serrin</a></p>
+
+<script>
+/* from Celestra v6.3.1 + module loading */
+function importScript(...scripts) {
+  for (let item of scripts) {
+    let element = document.createElement("script");
+    element.type = "module";
+    element.src = item;
+    element.onerror = function (error) {
+      throw new URIError("Loading failed for the script with source " + error.target.src);
+    };
+    (document.head || document.getElementsByTagName("head")[0]).appendChild(element);
+  }
+}
+function autoTest () { importScript("unittest.js"); }
+</script>
+
+</body>
+</html>
