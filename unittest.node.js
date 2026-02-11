@@ -2,22 +2,28 @@
 import assert from "./assert.js";
 globalThis.assert = assert;
 
-// import all into a new celestra object
+// import all functions
+
 import { Tuple, Record } from "./defiant.js";
 globalThis.Tuple = Tuple;
 globalThis.Record = Record;
 
+
 // import with default with name
-//import { default as defiant } from "./defiant.js";
-//globalThis.defiant = defiant;
-//globalThis.Tuple = defiant.Tuple;
-//globalThis.Record = defiant.Record;
+/*
+import { default as defiant } from "./defiant.js";
+globalThis.defiant = defiant;
+globalThis.Tuple = defiant.Tuple;
+globalThis.Record = defiant.Record;
+*/
 
 // import the defaultExport object
-//import defaultExport from "./defiant.js";
-//globalThis.defiant = defaultExport;
-//globalThis.Tuple = defiant.Tuple;
-//globalThis.Record = defiant.Record;
+/*
+import defaultExport from "./defiant.js";
+globalThis.defiant = defaultExport;
+globalThis.Tuple = defiant.Tuple;
+globalThis.Record = defiant.Record;
+*/
 
 
 /* Defiant v1.0.0 testcases for ESM environment */
@@ -73,15 +79,6 @@ testCases.push(
 );
 
 console.log("End of the test.");
-
-/*
-Record(object); Creates a frozen copy of an object.
-Record.fromEntries(entries); Creates a record from an iterable of key–value pairs.
-Record.fromObject(object); Alias for Record(object).
-Record.isRecord(value); Checks whether a value is a frozen object.
-Record.isEqual(x, y); Alias for Tuple.isEqual.
-Record.toObject(value); Converts a record to a mutable object (shallow copy).
-*/
 
 testCases
   .filter((item) => !assert.testCheck(item))

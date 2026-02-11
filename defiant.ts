@@ -12,7 +12,7 @@
  * @description This module provides utility functions for working with tuples (frozen arrays) and records (frozen objects) in JavaScript. It includes functions for creating tuples and records, checking if a value is a tuple or record, performing deep equality checks, and converting between tuples/records and regular arrays/objects.
  * @version 1.0.0
  * @author Ferenc Czigler
- * @see https://github.com/Serrin/
+ * @see https://github.com/Serrin/Defiant
  * @license MIT https://opensource.org/licenses/MIT
  */
 
