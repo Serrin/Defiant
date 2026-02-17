@@ -38,6 +38,11 @@ console.log("Start of the test.");
 
 testCases.push(
   assert.testSync( () => {
+    assert.isTrue(
+      typeof Tuple.VERSION === "string"
+        && Tuple.VERSION.includes("Defiant v"),
+      "VERSION"
+    );
     assert.isTrue(Tuple.isTuple(Tuple(4,5,6)));
     assert.isFalse(Tuple.isTuple([4,5,6]));
     assert.isTrue(Tuple.isTuple(Tuple.of(4,5,6)));
@@ -59,6 +64,11 @@ testCases.push(
 
 testCases.push(
   assert.testSync( () => {
+    assert.isTrue(
+      typeof Record.VERSION === "string"
+        && Record.VERSION.includes("Defiant v"),
+      "VERSION"
+    );
     assert.isTrue(Record.isRecord(Record({a:1, b:2})));
     assert.isFalse(Record.isRecord({a:1, b:2}));
     assert.isTrue(Record.isRecord(Record.fromEntries([["a", 1], ["b", 2]])));

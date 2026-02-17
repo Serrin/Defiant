@@ -10,11 +10,13 @@
 /**
  * @name Defiant - Tuple and Record utilities
  * @description This module provides utility functions for working with tuples (frozen arrays) and records (frozen objects) in JavaScript. It includes functions for creating tuples and records, checking if a value is a tuple or record, performing deep equality checks, and converting between tuples/records and regular arrays/objects.
- * @version 1.0.0
+ * @version 1.0.1
  * @author Ferenc Czigler
  * @see https://github.com/Serrin/Defiant
  * @license MIT https://opensource.org/licenses/MIT
  */
+
+const VERSION = "Defiant v1.0.1";
 
 /*
 function _deepFreeze(O: any): void {
@@ -40,6 +42,8 @@ function _deepFreeze(O: any): void {
  */
 const Tuple = <T extends readonly unknown[]>(...values: T): T =>
   Object.freeze(values);
+
+Tuple.VERSION = VERSION;
 
 /**
  * @description Creates a frozen array (tuple) from the given values.
@@ -145,6 +149,8 @@ Tuple.toArray = <T extends readonly unknown[]>(value: T): unknown[] =>
  */
 const Record = <T extends object>(O: T): T =>
   Object.freeze(Object.assign({}, O)) as T;
+
+Record.VERSION = VERSION;
 
 /**
  * @description Creates a frozen object (record) from an iterable of key-value pairs. This function performs a shallow freeze, meaning that only the top-level properties of the object are frozen. Nested objects or arrays will not be frozen and can still be modified.

@@ -7,7 +7,7 @@ The module emphasizes immutability and provides helpers for creation, type check
 
 ## Overview
 
-**Version: 1.0.0**
+**Version: 1.0.1**
 
 **Defiant** provides:
 
@@ -86,6 +86,17 @@ const t = Tuple(1, "a", true);
 
 ```ts
 Tuple<T extends readonly unknown[]>(...values: T): T
+```
+
+---
+
+### `Tuple.VERSION`
+
+The version info of the library.
+
+```ts
+Tuple.VERSION;
+// "Defiant v1.0.1"
 ```
 
 ---
@@ -207,6 +218,17 @@ const r = Record({ a: 1, b: 2 });
 
 ```ts
 Record<T extends object>(O: T): T
+```
+
+---
+
+### `Record.VERSION`
+
+The version info of the library.
+
+```ts
+Record.VERSION;
+// "Defiant v1.0.1"
 ```
 
 ---

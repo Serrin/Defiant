@@ -1,5 +1,6 @@
 declare const Tuple: {
     <T extends readonly unknown[]>(...values: T): T;
+    VERSION: string;
     of<T extends readonly unknown[]>(...values: T): T;
     from<T extends readonly unknown[]>(iterable: Iterable<unknown> | ArrayLike<unknown>): T;
     isTuple(value: unknown): value is readonly unknown[];
@@ -8,6 +9,7 @@ declare const Tuple: {
 };
 declare const Record: {
     <T extends object>(O: T): T;
+    VERSION: string;
     fromEntries<T extends object>(entries: Iterable<readonly [keyof T, unknown]>): T;
     fromObject<T extends object>(O: T): T;
     isRecord(value: unknown): value is object;
@@ -18,6 +20,7 @@ export { Tuple, Record };
 declare const _default: {
     Tuple: {
         <T extends readonly unknown[]>(...values: T): T;
+        VERSION: string;
         of<T extends readonly unknown[]>(...values: T): T;
         from<T extends readonly unknown[]>(iterable: Iterable<unknown> | ArrayLike<unknown>): T;
         isTuple(value: unknown): value is readonly unknown[];
@@ -26,6 +29,7 @@ declare const _default: {
     };
     Record: {
         <T extends object>(O: T): T;
+        VERSION: string;
         fromEntries<T extends object>(entries: Iterable<readonly [keyof T, unknown]>): T;
         fromObject<T extends object>(O: T): T;
         isRecord(value: unknown): value is object;
